@@ -2,12 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
 )
+
+type HandsOn struct {
+	Time     time.Time `json:"time"`
+	HostName string    `json:"hostname"`
+}
 
 func main() {
 	http.HandleFunc("/", serverHTTP)
@@ -17,7 +21,10 @@ func main() {
 }
 
 func serverHTTP(w http.ResponseWriter, r *http.Request) {
+	resp := HandsOn{
+		Time:     time.Now(),
+		HostName: os.Getenv("HOSTNAME"),
+	}
 	w.Header().Set("Content-Type", "application/json")
-	resp := fmt.Sprintf("La hora es %s y el hostname es %s", time.Now(), os.Getenv("HOSTNAME"))
-	json.NewEncoder(w).Encode(map[string]string{"message": resp})
+	json.NewEncoder(w).Encode(resp)
 }
