@@ -21,6 +21,11 @@ func main() {
 }
 
 func serverHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
 	resp := HandsOn{
 		Time:     time.Now(),
 		HostName: os.Getenv("HOSTNAME"),
