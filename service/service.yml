@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-test
+  labels:
+    app: front
+spec:
+  revisionHistoryLimit: 1
+  replicas: 5
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+          - containerPort: 70
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  labels:
+    app: front
+spec:
+  selector:
+    app: front
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
