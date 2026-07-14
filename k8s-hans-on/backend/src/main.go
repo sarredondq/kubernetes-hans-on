@@ -26,9 +26,14 @@ func serverHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	hostname, err := os.Hostname()
+	if err != nil {
+		hostname = "unknown"
+	}
+
 	resp := HandsOn{
 		Time:     time.Now(),
-		HostName: os.Getenv("HOSTNAME"),
+		HostName: hostname,
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)
