@@ -21,6 +21,8 @@ func main() {
 }
 
 func serverHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
